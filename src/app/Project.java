@@ -49,6 +49,7 @@ public class Project {
         apiRoutes = new ArrayList<>();
         consoleRoutes = new ArrayList<>();
         staticPages = new ArrayList<>();
+        appModels = new ArrayList<>();
     }
 
     public String getPhpInstallationPath() {

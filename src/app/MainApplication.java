@@ -28,8 +28,9 @@ public class MainApplication extends javax.swing.JFrame {
     ListController staticPagesListController;
     ComboController modelSelectorController;
     ComboController modelAttributeSelectorController;
-    
+
     Model tempModel;
+
     /**
      * Creates new form Main
      */
@@ -40,8 +41,8 @@ public class MainApplication extends javax.swing.JFrame {
         project = new Project();
         Notify.setParent(jTabbedPane1);
     }
-    
-    private void initComponentsIntegrity(){
+
+    private void initComponentsIntegrity() {
         databaseTablesListController = new ListController(jList1);
         modelAttributesListController = new ListController(jList2);
         appControllersListController = new ListController(jList4);
@@ -49,29 +50,34 @@ public class MainApplication extends javax.swing.JFrame {
         staticPagesListController = new ListController(jList3);
         modelSelectorController = new ComboController(jComboBox2);
         modelAttributeSelectorController = new ComboController(jComboBox3);
-        
+
         jTabbedPane1.setEnabledAt(0, true);
         jTabbedPane1.setEnabledAt(1, false);
         jTabbedPane1.setEnabledAt(2, false);
         jTabbedPane1.setEnabledAt(3, false);
         jTabbedPane1.setEnabledAt(4, false);
-        
+
         jButton3.setEnabled(false);
         //jButton4.setEnabled(false);
     }
-    
+
     private class ListController {
+
         private JList list;
         private List<Object> listItems;
-        ListController(JList listView){
+
+        ListController(JList listView) {
             this.list = listView;
             list.setModel(new DefaultListModel());
             listItems = new ArrayList<>();
         }
-        private int selectedIndex(){
-            return  list.getSelectedIndex();
+
+        private int selectedIndex() {
+            int selected = list.getSelectedIndex() == -1 ? listItems.size()-1 : list.getSelectedIndex();
+            return selected;
         }
-        private void renderListView(){
+
+        private void renderListView() {
             list.removeAll();
             DefaultListModel<Object> l = new DefaultListModel();
             //l.addAll(listItems);
@@ -79,20 +85,24 @@ public class MainApplication extends javax.swing.JFrame {
             list.setModel(l);
             list.repaint();
         }
-        public void addElement(Object listItem){
+
+        public void addElement(Object listItem) {
             listItems.add(listItem);
             renderListView();
         }
-        public void removeElement(){
+
+        public void removeElement() {
             listItems.remove(selectedIndex());
             renderListView();
         }
-        public void replaceElement(Object newItem){
+
+        public void replaceElement(Object newItem) {
             listItems.set(selectedIndex(), newItem);
             renderListView();
         }
+
         //---
-        public Object selectedElement(){
+        public Object selectedElement() {
             return listItems.get(selectedIndex());
         }
 
@@ -101,18 +111,23 @@ public class MainApplication extends javax.swing.JFrame {
             renderListView();
         }
     }
+
     private class ComboController {
+
         private JComboBox list;
         private List<Object> listItems;
-        ComboController(JComboBox listView){
+
+        ComboController(JComboBox listView) {
             this.list = listView;
             list.setModel(new DefaultComboBoxModel());
             listItems = new ArrayList<>();
         }
-        private int selectedIndex(){
+
+        private int selectedIndex() {
             return list.getSelectedIndex();
         }
-        private void renderListView(){
+
+        private void renderListView() {
             list.removeAll();
             DefaultComboBoxModel<Object> l = new DefaultComboBoxModel();
             //l.addAll(listItems);
@@ -120,18 +135,22 @@ public class MainApplication extends javax.swing.JFrame {
             list.setModel(l);
             list.repaint();
         }
-        public void addElement(Object listItem){
+
+        public void addElement(Object listItem) {
             listItems.add(listItem);
             renderListView();
         }
-        public void removeElement(){
+
+        public void removeElement() {
             listItems.remove(selectedIndex());
             renderListView();
         }
+
         //---
-        public Object selectedElement(){
-             return listItems.get(selectedIndex());
+        public Object selectedElement() {
+            return listItems.get(selectedIndex());
         }
+
         public void reset() {
             listItems = new ArrayList<>();
             renderListView();
@@ -746,6 +765,11 @@ public class MainApplication extends javax.swing.JFrame {
 
         jButton27.setText("Add Attribute");
         jButton27.setEnabled(false);
+        jButton27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton27ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Add simple attributes before foreign keys...");
 
@@ -1577,18 +1601,17 @@ public class MainApplication extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int currentTab = jTabbedPane1.getSelectedIndex();
-        if(currentTab-1 > 0){
+        if (currentTab - 1 > 0) {
             jButton3.setEnabled(true);
-        }
-        else {
+        } else {
             jButton3.setEnabled(false);
         }
-        if(currentTab-1 >= 0) {
-            jTabbedPane1.setSelectedIndex(currentTab-1);
+        if (currentTab - 1 >= 0) {
+            jTabbedPane1.setSelectedIndex(currentTab - 1);
         }
-        if(currentTab-1 < 4){
+        if (currentTab - 1 < 4) {
             jButton4.setEnabled(true);
-        } 
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -1608,7 +1631,8 @@ public class MainApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jCheckBox13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox13ActionPerformed
-        // TODO add your handling code here:
+        jComboBox2.setEnabled(jCheckBox13.isSelected());
+        jComboBox3.setEnabled(jCheckBox13.isSelected());
     }//GEN-LAST:event_jCheckBox13ActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
@@ -1619,7 +1643,7 @@ public class MainApplication extends javax.swing.JFrame {
         chooser.setAcceptAllFileFilterUsed(false);
         if (chooser.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
             jTextField5.setText(chooser.getSelectedFile().getAbsolutePath());
-            Print.line("Project directory path selected : " + chooser.getSelectedFile().getAbsolutePath() );
+            Print.line("Project directory path selected : " + chooser.getSelectedFile().getAbsolutePath());
         } else {
             Print.line("No Path Selection");
         }
@@ -1627,7 +1651,7 @@ public class MainApplication extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         int currentTab = jTabbedPane1.getSelectedIndex();
-        switch(currentTab){
+        switch (currentTab) {
             case 0:
                 //v
                 break;
@@ -1644,22 +1668,21 @@ public class MainApplication extends javax.swing.JFrame {
                 //v
                 return;
         }
-        if(currentTab+1 > 0){
+        if (currentTab + 1 > 0) {
             jButton3.setEnabled(true);
-        }
-        else {
+        } else {
             jButton3.setEnabled(false);
         }
-        if(currentTab-1 >= 0) {
-            jTabbedPane1.setSelectedIndex(currentTab-1);
+        if (currentTab - 1 >= 0) {
+            jTabbedPane1.setSelectedIndex(currentTab - 1);
         }
-        if(currentTab+1 > 4){
+        if (currentTab + 1 > 4) {
             jButton4.setEnabled(false);
         }
-        if(currentTab+1 < 5){
-            jTabbedPane1.setEnabledAt(currentTab+1, true);
-            jTabbedPane1.setSelectedIndex(currentTab+1);
-            if(currentTab+1 == 4) {
+        if (currentTab + 1 < 5) {
+            jTabbedPane1.setEnabledAt(currentTab + 1, true);
+            jTabbedPane1.setSelectedIndex(currentTab + 1);
+            if (currentTab + 1 == 4) {
                 jButton4.setEnabled(false);
             }
             jButton3.setEnabled(true);
@@ -1668,17 +1691,15 @@ public class MainApplication extends javax.swing.JFrame {
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
-        if(jTextField11.getText().isBlank()){
+        if (jTextField11.getText().isBlank()) {
             Notify.error("You have to set a project name");
-        }
-        else if(jTextField5.getText().isBlank()){
+        } else if (jTextField5.getText().isBlank()) {
             Notify.error("Please select the root directory where the project will be installed");
-        }
-        else {
-            if("LaraScratch".equals(jTextField11.getText())){
+        } else {
+            if ("LaraScratch".equals(jTextField11.getText())) {
                 Notify.info("The project will be created with the default name LaraScratch");
             }
-            
+
         }
     }//GEN-LAST:event_jButton24ActionPerformed
 
@@ -1694,7 +1715,7 @@ public class MainApplication extends javax.swing.JFrame {
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
         String dbfile = FilePicker.chooseSqliteDbFile();
-        if(dbfile == null){
+        if (dbfile == null) {
             Notify.warning("No Database file selected. In order to use SQLite, you need to select a .db or .sqlite file.\nThe default LaraScratch SQLite Database File will be used instead.");
             jTextField12.setText("larascratch.db");
         } else {
@@ -1708,7 +1729,7 @@ public class MainApplication extends javax.swing.JFrame {
         jPanel19.setEnabled(enable);
         jButton25.setEnabled(enable);
         jTextField12.setEnabled(enable);
-        
+
         jTextField1.setEnabled(!enable);
         jTextField2.setEnabled(!enable);
         jTextField3.setEnabled(!enable);
@@ -1719,17 +1740,23 @@ public class MainApplication extends javax.swing.JFrame {
         jLabel11.setEnabled(!enable);
         jLabel12.setEnabled(!enable);
         jLabel18.setEnabled(!enable);
-        
-        switch(server){
-            case "mysql": jTextField8.setText("3306"); break;
-            case "sqlserver": jTextField8.setText("1433"); break;
-            case "postgresql": jTextField8.setText("5432"); break;
+
+        switch (server) {
+            case "mysql":
+                jTextField8.setText("3306");
+                break;
+            case "sqlserver":
+                jTextField8.setText("1433");
+                break;
+            case "postgresql":
+                jTextField8.setText("5432");
+                break;
         }
     }//GEN-LAST:event_jComboBox8ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         Print.line("Checking form for connection");
-        String dbms = (String)jComboBox8.getSelectedItem(),
+        String dbms = (String) jComboBox8.getSelectedItem(),
                 user = jTextField2.getText(),
                 host = jTextField3.getText(),
                 port = jTextField8.getText(),
@@ -1738,40 +1765,39 @@ public class MainApplication extends javax.swing.JFrame {
                 notification = "Pay attention, check the list below to see what happened : \n";
         boolean isDatabaseConnection = buttonGroup2.getSelection().equals(jRadioButton4.getModel());
         boolean allOk = true;
-        if("sqlite".equals(dbms)) {
+        if ("sqlite".equals(dbms)) {
             name = jTextField12.getText();
-            if(name.isBlank()){
+            if (name.isBlank()) {
                 notification = "* You have to set a database file to test SQLite connection";
                 allOk = false;
             }
-        } 
-        else {
-            if(isDatabaseConnection && name.isBlank()){
+        } else {
+            if (isDatabaseConnection && name.isBlank()) {
                 notification = "* The database name has to be set in case of Database Connection\n";
                 allOk = false;
             }
-            if(user.isBlank()){
+            if (user.isBlank()) {
                 notification += "* The server username is not set\n";
                 allOk = false;
             }
-            if(host.isBlank()){
+            if (host.isBlank()) {
                 notification += "* The server host is not set\n";
                 allOk = false;
             }
-            if(port.isBlank()){
+            if (port.isBlank()) {
                 notification += "* The server port is not set\n";
                 allOk = false;
             }
-            if(password.isBlank()){
+            if (password.isBlank()) {
                 notification += "(By submitting a blank password, you mean that the connection profile is not protected by a password)";
             }
         }
-        if(allOk){
+        if (allOk) {
             DatabaseConnection.init(dbms, user, host, port, password, name);
             String testResult = isDatabaseConnection ? DatabaseConnection.testDatabaseConnection() : DatabaseConnection.testServerConnection();
-            if(testResult.contains("Failed")){
+            if (testResult.contains("Failed")) {
                 Notify.warning(testResult);
-            } else if(testResult.contains("Error")){
+            } else if (testResult.contains("Error")) {
                 Notify.error(testResult);
             } else {
                 Notify.info(testResult);
@@ -1781,7 +1807,7 @@ public class MainApplication extends javax.swing.JFrame {
         } else {
             Notify.warning(notification);
         }
-        
+
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -1789,37 +1815,35 @@ public class MainApplication extends javax.swing.JFrame {
         Print.line("Importing database tables");
         project.setAppModels(DatabaseConnection.importDatabaseMetadata());
         int tbcount = project.getAppModels().size();
-        if(tbcount == 0){
+        if (tbcount == 0) {
             Notify.info("The database is empty. You can add your own tables (models)");
             Print.line("Empty database. No table to import");
-        }
-        else {
+        } else {
             project.getAppModels().forEach((Model m) -> {
                 databaseTablesListController.addElement(m);
                 modelSelectorController.addElement(m);
             });
-            Print.line("Tables imported : "+ tbcount);
+            Print.line("Tables imported : " + tbcount);
             jButton10.setEnabled(false);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
-        Model m = (Model)databaseTablesListController.selectedElement();
+        Model m = (Model) databaseTablesListController.selectedElement();
         modelAttributesListController.reset();
-        jTextField6.setText(m.getName());
-        m.getModelAttributes().forEach(modelAttributesListController::addElement);
-    }//GEN-LAST:event_jList1ValueChanged
-
-    private void jList2ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList2ValueChanged
-        Attribute a = (Attribute)modelAttributesListController.selectedElement();
-        Model m = (Model)databaseTablesListController.selectedElement();
-        jTextField7.setText(a.getName());
-        jComboBox1.getModel().setSelectedItem(a.getType());
         jCheckBox1.getModel().setSelected(m.isHasViews());
         jCheckBox2.getModel().setSelected(m.isHasController());
         jCheckBox3.getModel().setSelected(m.isHasMigration());
         jCheckBox4.getModel().setSelected(m.isHasFactory());
-        if(a.isIsReference()){
+        jTextField6.setText(m.getName());
+        m.getModelAttributes().forEach(modelAttributesListController::addElement);
+        showAttributeDetails(m.getModelAttributes().getFirst());
+    }//GEN-LAST:event_jList1ValueChanged
+    private void showAttributeDetails(Attribute a){
+        jTextField7.setText(a.getName());
+        jComboBox1.getModel().setSelectedItem(a.getType());
+        Model m = (Model) databaseTablesListController.selectedElement();
+        if (a.isIsReference()) {
             jCheckBox13.getModel().setSelected(true);
             jComboBox2.getModel().setSelectedItem(a.getRefModelName());
             modelAttributeSelectorController.reset();
@@ -1828,35 +1852,90 @@ public class MainApplication extends javax.swing.JFrame {
         } else {
             jCheckBox13.getModel().setSelected(false);
         }
-        
+    }
+    private void jList2ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList2ValueChanged
+        Attribute a = (Attribute) modelAttributesListController.selectedElement();
+        showAttributeDetails(a);
     }//GEN-LAST:event_jList2ValueChanged
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
-        String modelName =Utils.toPhraseCase(jTextField6.getText()),
+        String modelName = jTextField6.getText(),
                 notification = "Pay attention on this : \n";
-        boolean allOk = false;
-        for(Model m : project.getAppModels()){
-            if(m.getName().equals(modelName)){
-                allOk = false;
-                notification += "A Model with this name already created.\n";
-                break;
+        boolean allOk = true;
+        if (!DatabaseConnection.isConnected()) {
+            notification += "Before adding Models, make sure to configure a successful database/server connection first\n";
+            allOk = false;
+        }
+        if (!project.getAppModels().isEmpty()) {
+            for (Model m : project.getAppModels()) {
+                if (m.getName().equals(modelName)) {
+                    allOk = false;
+                    notification += "A Model with this name already created.\n";
+                    break;
+                }
             }
         }
-        if(allOk){
+        if(modelName.isBlank()){
+            notification += "Please set the model's name\n";
+        } 
+        else {
+            modelName = Utils.toPhraseCase(modelName);
+        }
+        if (allOk) {
             tempModel = new Model(modelName);
             tempModel.setHasViews(jCheckBox1.isSelected());
             tempModel.setHasController(jCheckBox2.isSelected());
             tempModel.setHasMigration(jCheckBox3.isSelected());
             tempModel.setHasFactory(jCheckBox4.isSelected());
+            Attribute a = new Attribute("id", "integer");
+            tempModel.addModelAttribute(a);
+            modelAttributesListController.reset();
+            modelAttributesListController.addElement(a);
+            databaseTablesListController.addElement(tempModel);
+            modelSelectorController.addElement(tempModel);
             jTextField7.setEditable(allOk);
             jCheckBox13.setEnabled(allOk);
             jComboBox1.setEnabled(allOk);
             jButton27.setEnabled(allOk);
-        }
+        } 
         else {
             Notify.warning(notification);
         }
     }//GEN-LAST:event_jButton26ActionPerformed
+
+    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
+        String name = jTextField7.getText(),
+                type = (String)jComboBox1.getSelectedItem(),
+                notification = "Pay attention on this :\n",
+                refName = " ",
+                refAttribute = " ";
+        boolean allOk = true, isRef = false;
+        if(name.isBlank()){
+            notification += "You have to set the name of this attribute\n";
+            allOk = false;
+        }
+        if(jCheckBox13.isSelected()){
+            isRef = true;
+            Model m = (Model)modelSelectorController.selectedElement();
+            refName = m.getName();
+            Attribute a = (Attribute)modelAttributeSelectorController.selectedElement();
+            refAttribute = a.getName();
+        }
+        if(allOk){
+            Attribute a = new Attribute(name, type);
+            if(isRef){
+                a.setIsReference(isRef);
+                a.setRefModelName(refName);
+                a.setRefModelAttribute(refAttribute);
+            }
+            tempModel.addModelAttribute(a);
+            modelAttributesListController.addElement(a);
+        }
+        else {
+            Notify.warning(notification);
+        }
+        
+    }//GEN-LAST:event_jButton27ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1871,7 +1950,6 @@ public class MainApplication extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
